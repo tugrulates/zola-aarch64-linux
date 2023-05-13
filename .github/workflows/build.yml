@@ -15,23 +15,20 @@ jobs:
           repository: getzola/zola
           fetch-depth: 0
           submodules: true
-      # - name: Find latest release
-      #   id: version
-      #   run: echo version=$(git for-each-ref --sort=-creatordate --count 1 --format="%(refname:short)" "refs/tags/v*") >> ${GITHUB_OUTPUT}
-      # - name: Switch to version commit
-      #   run: git checkout ${{ steps.version.outputs.version }}
-      # - name: Install rust
-      #   run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -y | sh
-      # - name: Install cross
-      #   run: cargo install cross --git https://github.com/cross-rs/cross
-      # - name: Build zola
-      #   run: cross build --release --target=aarch64-unknown-linux-gnu --verbose
-      # - name: Tar files
-      #   run: tar -C target/aarch64-unknown-linux-gnu/release -cvzf zola-aarch64-linux.tar.gz zola
+      - name: Find latest release
+        id: version
+        run: echo version=$(git for-each-ref --sort=-creatordate --count 1 --format="%(refname:short)" "refs/tags/v*") >> ${GITHUB_OUTPUT}
+      - name: Switch to version commit
+        run: git checkout ${{ steps.version.outputs.version }}
+      - name: Install rust
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -y | sh
+      - name: Install cross
+        run: cargo install cross --git https://github.com/cross-rs/cross
+      - name: Build zola
+        run: cross build --release --target=aarch64-unknown-linux-gnu --verbose
       - name: Tar files
-        run: tar -C src -cvzf zola-aarch64-linux.tar.gz main.rs
+        run: tar -C target/aarch64-unknown-linux-gnu/release -cvzf zola-aarch64-linux.tar.gz zola
       - name: Create package
         uses: actions/upload-artifact@v3
         with:
-          name: zola-aarch64-linux.tar.gz
           path: zola-aarch64-linux.tar.gz
