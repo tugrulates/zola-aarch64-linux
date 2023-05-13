@@ -17,7 +17,7 @@ jobs:
           submodules: true
       - name: Find latest release
         id: version
-        run: echo version=$(git for-each-ref --sort=-creatordate --count 1 --format="%(refname:short)" "refs/tags/v*") >> ${GITHUB_OUTPUT}"
+        run: echo version=$(git for-each-ref --sort=-creatordate --count 1 --format="%(refname:short)" "refs/tags/v*") >> ${GITHUB_OUTPUT}
       - name: Switch to version commit
         run: git checkout ${{ steps.version.outputs.version }}
       # - name: Install rust
